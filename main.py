@@ -31,10 +31,10 @@ with open("config.json", "r") as f:
         Sname = None
         time1 = None
         time0 = None
-        fileNames = []
 
         #выбор файла или всей папки
         while True:
+            fileNames = []
             print('You want to transcode a file or a whole folder?')
             folder = input('file[1] or folder[]: ')
             if folder == '':
@@ -84,46 +84,46 @@ with open("config.json", "r") as f:
                     if time0 and time1:
                         if not Sname:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4\n')
 
                         else:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4\n')
 
                     elif time0 and not time1:
                             if not Sname:
                                 system(
-                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -ss {time0}  -y "{save_loc}{name}.{bv}M.ss{time0}.mp4" """)
+                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0}  -y "{save_loc}{name}.{bv}M.ss{time0}.mp4" """)
                                 print(f'\n{save_loc}{name}.{bv}M.ss{time0}.mp4\n')
 
                             else:
                                 system(
-                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -ss {time0}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.mp4" """)
+                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.mp4" """)
                                 print(f'\n{save_loc}{Fname}.{bv}M.ss{time0}.mp4\n')
 
                     elif time1 and not time0:
                         if not Sname:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{name}.{bv}M.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{name}.{bv}M.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.t{time1}.mp4\n')
 
                         else:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{Fname}.{bv}M.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{Fname}.{bv}M.t{time1}.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.t{time1}.mp4\n')
 
                 # если не указано время
                     elif not time0 and not time1:
                         if not Sname:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M  -y "{save_loc}{name}.{bv}M.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M  -y "{save_loc}{name}.{bv}M.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.mp4\n')
 
                         else:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -preset p7 -b:v {bv}M  -y "{save_loc}{Fname}.{bv}M.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M  -y "{save_loc}{Fname}.{bv}M.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.mp4\n')
 
                 # обрезка
@@ -131,34 +131,34 @@ with open("config.json", "r") as f:
                     if time0 and time1:
                         if not Sname:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c copy -ss {time0} -t {time1}  -y "{save_loc}{name}.ss{time0}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{name}.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.ss{time0}.t{time1}.mp4\n')
 
                         else:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c copy -ss {time0} -t {time1}  -y "{save_loc}{Fname}.ss{time0}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{Fname}.ss{time0}.t{time1}.mp4" """)
                             print('f\n{save_loc}{Fname}.ss{time0}.t{time1}.mp4\n')
 
                     elif time0 and not time1:
                             if not Sname:
                                 system(
-                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c copy -ss {time0}  -y "{save_loc}{name}.ss{time0}.mp4" """)
+                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -ss {time0}  -y "{save_loc}{name}.ss{time0}.mp4" """)
                                 print('f\n{save_loc}{name}.ss{time0}.mp4\n')
 
                             else:
                                 system(
-                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c copy -ss {time0}  -y "{save_loc}{Fname}.ss{time0}.mp4" """)
+                                    f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0}  -y "{save_loc}{Fname}.ss{time0}.mp4" """)
                                 print('f\n{save_loc}{Fname}.ss{time0}.mp4\n')
 
                     elif time1 and not time0:
                         if not Sname:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c copy -t {time1}  -y "{save_loc}{name}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -t {time1}  -y "{save_loc}{name}.t{time1}.mp4" """)
                             print('f\n{save_loc}{name}.t{time1}.mp4\n')
 
                         else:
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c copy -t {time1}  -y "{save_loc}{Fname}.t{time1}.mp4" """)
+                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -t {time1}  -y "{save_loc}{Fname}.t{time1}.mp4" """)
                             print('f\n{save_loc}{Fname}.t{time1}.mp\n')
 
             print("Do you want to delete original files? (Y/n)")
@@ -169,4 +169,6 @@ with open("config.json", "r") as f:
                         i = i + '.mkv'
                     os.remove("..\\"+i)
                 print('Original files deleted')
-            else: print('Transcoding completed')
+            else:
+                print('Original files not deleted')
+                print('Transcoding completed')
