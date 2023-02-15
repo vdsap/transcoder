@@ -4,6 +4,10 @@ from os import system
 from os import path
 from os import mkdir
 from loguru import logger
+import sys
+
+logger.remove()
+logger.add(sys.stdout, level="INFO")
 
 logger.info("Convertor started")
 
