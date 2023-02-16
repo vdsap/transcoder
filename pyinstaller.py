@@ -4,6 +4,10 @@ import os
 from loguru import logger
 
 logger.info('Compilling started')
+try:
+    os.remove('Transcoder.zip')
+    logger.info('zip deleted')
+except: pass
 PyInstaller.__main__.run([
     'main.py',
     '--onefile',
@@ -19,3 +23,18 @@ shutil.rmtree('dist')
 logger.info('Removing dist folder')
 os.remove(' Transcoder.spec')
 logger.info('Removing spec file')
+try:
+    os.mkdir('release')
+    os.mkdir('release/Transcoder')
+except: pass
+logger.info('Created release directory')
+shutil.copyfile('Transcoder.exe', 'release/Transcoder/Transcoder.exe')
+logger.info('Transcoder.exe copied')
+shutil.copyfile('ffmpeg.exe', 'release/Transcoder/ffmpeg.exe')
+logger.info('Ffmpeg.exe copied')
+logger.info('Creating zip')
+shutil.make_archive('Transcoder','zip', 'release')
+logger.info('Archive made')
+shutil.rmtree('release')
+logger.info('Release directory removed')
+logger.info('Compilling compleate')
