@@ -51,7 +51,7 @@ with open("config.json", "r") as f:
                 print('2M')
 
         inp = None
-        Sname = None
+        Sname: None = None
         time1 = None
         time0 = None
 
@@ -110,6 +110,8 @@ with open("config.json", "r") as f:
             # транскодирование
             for i in fileNames:
                 logger.info(f"transcoding file {i}...")
+                start_command = 'ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3'
+                add_command = '-c:a copy -c:v hevc_nvenc -map 0 -preset p7 -strict -2'
                 if len(i.split(".")) > 1:
                     Fname = i.split(".")[0]
                     Sname = i.split(".")[1]
@@ -124,13 +126,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" {add_command} -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.ss{time0}.t{time1}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" {add_command} -b:v {bv}M -ss {time0} -t {time1}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.ss{time0}.t{time1}.mp4\n')
 
                     elif time0 and not time1:
@@ -138,13 +140,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0} -y "{save_loc}{name}.{bv}M.ss{time0}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" {add_command} -b:v {bv}M -ss {time0} -y "{save_loc}{name}.{bv}M.ss{time0}.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.ss{time0}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -ss {time0}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" {add_command} -b:v {bv}M -ss {time0}  -y "{save_loc}{Fname}.{bv}M.ss{time0}.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.ss{time0}.mp4\n')
 
                     elif time1 and not time0:
@@ -152,13 +154,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{name}.{bv}M.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" {add_command} -b:v {bv}M -t {time1}  -y "{save_loc}{name}.{bv}M.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.t{time1}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M -t {time1}  -y "{save_loc}{Fname}.{bv}M.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" {add_command} -b:v {bv}M -t {time1}  -y "{save_loc}{Fname}.{bv}M.t{time1}.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.t{time1}.mp4\n')
 
                     # если не указано время
@@ -167,13 +169,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M  -y "{save_loc}{name}.{bv}M.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" {add_command} -b:v {bv}M  -y "{save_loc}{name}.{bv}M.mp4" """)
                             print(f'\n{save_loc}{name}.{bv}M.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -c:a copy -c:v hevc_nvenc -map 0 -preset p7 -b:v {bv}M  -y "{save_loc}{Fname}.{bv}M.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" {add_command} -b:v {bv}M  -y "{save_loc}{Fname}.{bv}M.mp4" """)
                             print(f'\n{save_loc}{Fname}.{bv}M.mp4\n')
 
                 # обрезка
@@ -184,13 +186,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{name}.ss{time0}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{name}.ss{time0}.t{time1}.mp4" """)
                             print(f'\n{save_loc}{name}.ss{time0}.t{time1}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{Fname}.ss{time0}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0} -t {time1}  -y "{save_loc}{Fname}.ss{time0}.t{time1}.mp4" """)
                             print('f\n{save_loc}{Fname}.ss{time0}.t{time1}.mp4\n')
 
                     elif time0 and not time1:
@@ -198,13 +200,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -ss {time0}  -y "{save_loc}{name}.ss{time0}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" -map 0 -c copy -ss {time0}  -y "{save_loc}{name}.ss{time0}.mp4" """)
                             print('f\n{save_loc}{name}.ss{time0}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0}  -y "{save_loc}{Fname}.ss{time0}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" -map 0 -c copy -ss {time0}  -y "{save_loc}{Fname}.ss{time0}.mp4" """)
                             print('f\n{save_loc}{Fname}.ss{time0}.mp4\n')
 
                     elif time1 and not time0:
@@ -212,13 +214,13 @@ with open("config.json", "r") as f:
                         if not Sname:
                             logger.debug('mkv file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{name}.mkv" -map 0 -c copy -t {time1}  -y "{save_loc}{name}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{name}.mkv" -map 0 -c copy -t {time1}  -y "{save_loc}{name}.t{time1}.mp4" """)
                             print('f\n{save_loc}{name}.t{time1}.mp4\n')
 
                         else:
                             logger.debug('other type file')
                             system(
-                                f""" ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3 -i "..\{Fname}.{Sname}" -map 0 -c copy -t {time1}  -y "{save_loc}{Fname}.t{time1}.mp4" """)
+                                f""" {start_command} -i "..\{Fname}.{Sname}" -map 0 -c copy -t {time1}  -y "{save_loc}{Fname}.t{time1}.mp4" """)
                             print('f\n{save_loc}{Fname}.t{time1}.mp\n')
 
             logger.info("transcoding completed")
