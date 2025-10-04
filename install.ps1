@@ -22,8 +22,30 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-$command = $executablePath + " -i `"%1`""
-reg add "HKCU\Software\Classes\SystemFileAssociations\.mp4\shell\Transcoder\command" /ve /d $command /f  > $null
+$command = "`"$executablePath`" `"%1`""
+reg add "HKCU\Software\Classes\SystemFileAssociations\.mp4\shell\Transcoder\command" /ve /d "$command" /f  > $null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ reg error"
+    pressEnterToExit
+    exit $LASTEXITCODE
+}
+
+reg add "HKCU\Software\Classes\SystemFileAssociations\.mkv\shell\Transcoder" /ve /d "Transcoder" /f > $null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ reg error"
+    pressEnterToExit
+    exit $LASTEXITCODE
+}
+
+reg add "HKCU\Software\Classes\SystemFileAssociations\.mkv\shell\Transcoder" /v "Icon" /d "$executablePath,0" /f > $null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ reg error"
+    pressEnterToExit
+    exit $LASTEXITCODE
+}
+
+$command = "`"$executablePath`" `"%1`""
+reg add "HKCU\Software\Classes\SystemFileAssociations\.mkv\shell\Transcoder\command" /ve /d "$command" /f  > $null
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ reg error"
     pressEnterToExit
