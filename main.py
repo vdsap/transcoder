@@ -156,7 +156,7 @@ def main_thread(_file_path, context_mode):
             # транскодирование
             for i in file_names:
                 logger.info(f"transcoding file {i}...")
-                start_command = 'ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 3'
+                start_command = 'ffmpeg -hide_banner -hwaccel cuda -hwaccel_output_format cuda -extra_hw_frames 2'
                 add_command = '-c:a copy -c:v hevc_nvenc -map 0 -preset p7 -strict -2'
                 if context_mode:
                     i = i.split("\\")[-1]
