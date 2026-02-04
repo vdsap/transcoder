@@ -296,7 +296,7 @@ def main_thread(_file_path, context_mode):
                     if context_mode:
                         logger.debug(f"context mode: {i}")
                         os.remove(i)
-                        exit(0)
+                        sys.exit(0)
                     else:
                         if len(i.split(".")) == 1:
                             i = i + '.mkv'
