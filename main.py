@@ -20,9 +20,12 @@ def mtime(_path, _up_folder_path) -> str:
 
 
 def is_context_menu():
-    if len(sys.argv) > 1 and path.exists(sys.argv[1]):
+    logger.debug(sys.argv)
+    if len(sys.argv) > 1:
+        logger.debug(f"file: {sys.argv[1]}")
         return True
     else:
+        logger.debug("not context menu")
         return False
 
 
@@ -91,17 +94,18 @@ def main_thread(_file_path, context_mode):
             file_names = []
             if context_mode:
                 up_folder_path = ""
-                if is_folder_selected(_file_path) == "file":
-                    file_names.append(_file_path)
-                else:
-                    files = os.listdir(_file_path)
-                    print("files to transcode:")
-                    print('Name and modified time')
-                    for i in files:
-                        if len(i.split('.')) > 1:
-                            if i.split('.')[1] == 'mkv' or i.split('.')[1] == 'mp4':
-                                file_names.append(i)
-                                print(f'{i}     {mtime(_file_path+"\\"+i, up_folder_path)}')
+                file_names.append(_file_path)
+                # if is_folder_selected(_file_path) == "file":
+                #     file_names.append(_file_path)
+                # else:
+                #     files = os.listdir(_file_path)
+                #     print("files to transcode:")
+                #     print('Name and modified time')
+                #     for i in files:
+                #         if len(i.split('.')) > 1:
+                #             if i.split('.')[1] == 'mkv' or i.split('.')[1] == 'mp4':
+                #                 file_names.append(i)
+                #                 print(f'{i}     {mtime(_file_path+"\\"+i, up_folder_path)}')
 
             else:
                 up_folder_path = "..\\"
@@ -288,10 +292,11 @@ def main_thread(_file_path, context_mode):
             del_ans = input()
             if del_ans == 'y' or del_ans == 'Y':
                 for i in file_names:
-                    if context_mode and is_folder_selected(_file_path) == "dir":
-                        if len(i.split(".")) == 1:
-                            i = i + '.mkv'
-                        os.remove(_file_path+ "\\" + i)
+                    logger.debug(i)
+                    if context_mode:
+                        logger.debug(f"context mode: {i}")
+                        os.remove(i)
+                        exit(0)
                     else:
                         if len(i.split(".")) == 1:
                             i = i + '.mkv'
