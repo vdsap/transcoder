@@ -3,3 +3,4 @@ ffmpeg.exe
 Transcoder.exe
 Transcoder.zip
 config.json
+__pycache__
