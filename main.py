@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from os import system
 from os import path
 from os import mkdir
@@ -11,6 +12,30 @@ logger.remove()
 logger.add(sys.stdout, level="INFO")
 
 logger.info("Convertor started")
+
+
+def wake_up_disk(file_path, save_dir, max_wait_seconds=10):
+    """
+    Будит диск перед запуском ffmpeg, выполняя чтение исходного файла
+    и проверку доступности папки назначения, чтобы избежать сбоя ffmpeg из-за задержки раскрутки HDD.
+    """
+    logger.info("Checking disk readiness...")
+    start_t = time.time()
+    while time.time() - start_t < max_wait_seconds:
+        try:
+            # Пытаемся прочитать заголовок входного файла
+            if path.exists(file_path):
+                with open(file_path, "rb") as f:
+                    _ = f.read(4096)
+            # Пытаемся проверить папку назначения
+            if path.exists(save_dir):
+                _ = os.listdir(save_dir)
+            break
+        except Exception as e:
+            logger.debug(f"Waiting for disk spin-up: {e}")
+            time.sleep(1)
+    # Небольшая гарантированная пауза для стабилизации файловой системы
+    time.sleep(1)
 
 
 def mtime(_path, _up_folder_path) -> str:
@@ -251,8 +276,11 @@ def main_thread(_file_path, context_mode):
 
                 out_full_path = path.join(save_loc, out_name)
 
+                wake_up_disk(file_entry, save_loc)
+
                 cmd = f'{start_command} {time_args} -i "{file_entry}" {add_command} -y "{out_full_path}"'
                 logger.debug(f"Running command: {cmd}")
+                print(f"Command:\n{cmd}\n")
                 system(cmd)
                 print(f'\n{out_full_path}\n')
 
